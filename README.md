@@ -82,3 +82,5 @@ Celo offers low fees. Your rewards stay in your pocket. Fast transactions mean q
 ## Getting Started
 
 Frontend: Navigate to frontend folder. Run npm install. Run npm run dev. Visit localhost:3000.
+
+Contracts: See contracts README for setup. Deploy to Celo Sepolia testnet. Update frontend addresses.
