@@ -32,3 +32,5 @@ Step one: Connect your wallet. Use MetaMask, WalletConnect, or MiniPay. MiniPay 
 Step two: Buy PASS tokens. Choose CELO or cUSD. One CELO buys 30 PASS tokens. 0.17 cUSD buys 30 PASS tokens. You need 34 PASS tokens to mint a Gem.
 
 Step three: Mint your Gem. Spend 34 PASS tokens. One Gem unlocks all games. Your Gem stays in your wallet.
+
+Step four: Play games. Choose from multiple games. Tap buttons. Remember patterns. Score points. Games submit scores automatically.
