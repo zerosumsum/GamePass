@@ -209,3 +209,73 @@ contract GamePassTokenTest is Test {
         token.unpause();
         vm.stopPrank();
     }
+    
+    // ============ Access Control Tests ============
+    
+    function test_SetRewardsContract() public {
+        vm.startPrank(owner);
+        token.setRewardsContract(rewardsContract);
+        vm.stopPrank();
+        
+        assertEq(token.rewardsContract(), rewardsContract, "Rewards contract should be set");
+    }
+    
+    function test_RevertWhen_SetRewardsContractByNonOwner() public {
+        vm.startPrank(user1);
+        vm.expectRevert();
+        token.setRewardsContract(rewardsContract);
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_SetRewardsContractToZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert("Rewards contract cannot be zero address");
+        token.setRewardsContract(address(0));
+        vm.stopPrank();
+    }
+    
+    function test_SetSwapContract() public {
+        vm.startPrank(owner);
+        token.setSwapContract(swapContract);
+        vm.stopPrank();
+        
+        assertEq(token.swapContract(), swapContract, "Swap contract should be set");
+    }
+    
+    function test_RevertWhen_SetSwapContractByNonOwner() public {
+        vm.startPrank(user1);
+        vm.expectRevert();
+        token.setSwapContract(swapContract);
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_SetSwapContractToZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert("Swap contract cannot be zero address");
+        token.setSwapContract(address(0));
+        vm.stopPrank();
+    }
+    
+    function test_SetTreasury() public {
+        address newTreasury = address(7);
+        
+        vm.startPrank(owner);
+        token.setTreasury(newTreasury);
+        vm.stopPrank();
+        
+        assertEq(token.treasury(), newTreasury, "Treasury should be updated");
+    }
+    
+    function test_RevertWhen_SetTreasuryByNonOwner() public {
+        vm.startPrank(user1);
+        vm.expectRevert();
+        token.setTreasury(address(7));
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_SetTreasuryToZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert("Treasury cannot be zero address");
+        token.setTreasury(address(0));
+        vm.stopPrank();
+    }
