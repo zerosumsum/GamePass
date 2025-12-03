@@ -74,3 +74,7 @@ GamePass works on your phone. Responsive design fits any screen. iPhone frame on
 ## What You Own
 
 Your Gem NFT belongs to you. Trade it. Sell it. Keep it. Your PASS tokens belong to you. Spend them. Hold them. Your scores stay on blockchain forever.
+
+## Why Celo
+
+Celo offers low fees. Your rewards stay in your pocket. Fast transactions mean quick payouts. Mobile design works on your phone. Built for real use.
