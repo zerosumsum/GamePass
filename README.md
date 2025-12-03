@@ -19,4 +19,4 @@ Play multiple games. Earn rewards. Own your progress.
 
 ## What You Get
 
-You play various games. You score points. You earn PASS tokens.
+You play various games. You score points. You earn PASS tokens. Top players win more. Your scores stay on blockchain. Your rewards stay in your wallet.
