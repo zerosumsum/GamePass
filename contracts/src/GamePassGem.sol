@@ -17,3 +17,18 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 contract GamePassGem is ERC721URIStorage, Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
+    // Token price: 34 PASS tokens per Gem
+    uint256 public constant PRICE_PER_GEM = 34 * 10**18; // 34 PASS tokens with 18 decimals
+    
+    // Maximum supply
+    uint256 public maxSupply;
+    
+    // Current token ID counter
+    uint256 private _tokenIdCounter;
+    
+    // Payment token address (GamePassToken - PASS)
+    address public paymentToken;
+    
+    // Treasury address to receive payments
+    address public treasury;
+
