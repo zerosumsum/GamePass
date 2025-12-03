@@ -110,4 +110,4 @@ Frontend README: Frontend setup and feature documentation.
 
 ## About This Project
 
-GamePass is a personal project exploring play to earn mechanics on Celo blockchain. Mobile first design. Smart contract rewards. MiniPay integration. Multiple games. Built for learning and experimentation. Open source and available for contributions.
+GamePass is a play to earn gaming platform on Celo blockchain. Mobile first design. Smart contract rewards. MiniPay integration. Multiple games. Open source and available for contributions.
