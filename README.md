@@ -40,3 +40,5 @@ Step five: View leaderboard. See top 10 players. Top three get podium display. Y
 Step six: Claim rewards. Top players earn PASS tokens. Rewards go to your wallet. Prize pool distributes automatically.
 
 ## Games
+
+Rhythm: Tap glowing buttons in sync. Perfect timing scores 10 points. Good timing scores 5 points. Thirty second rounds. Sound effects guide you.
