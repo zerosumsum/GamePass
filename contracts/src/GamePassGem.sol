@@ -31,4 +31,16 @@ contract GamePassGem is ERC721URIStorage, Ownable, ReentrancyGuard {
     
     // Treasury address to receive payments
     address public treasury;
+    
+    // Claim conditions
+    bool public claimActive;
+    uint256 public claimStartTime;
+    
+    // Allowlist proof structure (for compatibility with Thirdweb)
+    struct AllowlistProof {
+        bytes32[] proof;
+        uint256 quantityLimitPerWallet;
+        uint256 pricePerToken;
+        address currency;
+    }
 
