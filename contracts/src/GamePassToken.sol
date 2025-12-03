@@ -63,5 +63,7 @@ contract GamePassToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, Reentran
         // Mint 50% of max supply to treasury
         uint256 treasuryAmount = MAX_SUPPLY / 2;
         _mint(treasury, treasuryAmount);
+        
+        emit TokensMinted(treasury, treasuryAmount, msg.sender);
     }
 
