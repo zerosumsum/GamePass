@@ -113,4 +113,17 @@ contract GamePassToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, Reentran
         
         emit SwapContractUpdated(oldContract, _swapContract);
     }
+    
+    /**
+     * @dev Set the treasury address (only owner)
+     * @param _treasury Address of the new treasury
+     */
+    function setTreasury(address _treasury) external onlyOwner {
+        require(_treasury != address(0), "Treasury cannot be zero address");
+        
+        address oldTreasury = treasury;
+        treasury = _treasury;
+        
+        emit TreasuryUpdated(oldTreasury, _treasury);
+    }
 
