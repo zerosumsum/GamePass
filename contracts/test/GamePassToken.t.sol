@@ -335,3 +335,51 @@ contract GamePassTokenTest is Test {
         token.mint(user1, mintAmount);
         vm.stopPrank();
     }
+    
+    // ============ Burn Tests ============
+    
+    function test_Burn() public {
+        vm.startPrank(owner);
+        token.mint(user1, 1000 * 10**18);
+        vm.stopPrank();
+        
+        uint256 burnAmount = 200 * 10**18;
+        
+        vm.startPrank(user1);
+        token.burn(burnAmount);
+        vm.stopPrank();
+        
+        assertEq(token.balanceOf(user1), 1000 * 10**18 - burnAmount, "Balance should decrease after burn");
+        assertEq(token.totalSupply(), TREASURY_INITIAL_SUPPLY + 1000 * 10**18 - burnAmount, "Total supply should decrease");
+    }
+    
+    function test_BurnFrom() public {
+        vm.startPrank(owner);
+        token.mint(user1, 1000 * 10**18);
+        vm.stopPrank();
+        
+        uint256 burnAmount = 200 * 10**18;
+        
+        vm.startPrank(user1);
+        token.approve(user2, burnAmount);
+        vm.stopPrank();
+        
+        vm.startPrank(user2);
+        token.burnFrom(user1, burnAmount);
+        vm.stopPrank();
+        
+        assertEq(token.balanceOf(user1), 1000 * 10**18 - burnAmount, "Balance should decrease after burnFrom");
+        assertEq(token.totalSupply(), TREASURY_INITIAL_SUPPLY + 1000 * 10**18 - burnAmount, "Total supply should decrease");
+    }
+    
+    function test_RevertWhen_BurnWhilePaused() public {
+        vm.startPrank(owner);
+        token.mint(user1, 1000 * 10**18);
+        token.pause();
+        vm.stopPrank();
+        
+        vm.startPrank(user1);
+        vm.expectRevert();
+        token.burn(100 * 10**18);
+        vm.stopPrank();
+    }
