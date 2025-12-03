@@ -43,4 +43,18 @@ contract GamePassGem is ERC721URIStorage, Ownable, ReentrancyGuard {
         uint256 pricePerToken;
         address currency;
     }
+    
+    // Events
+    event TokensClaimed(
+        uint256 indexed claimConditionIndex,
+        address indexed claimer,
+        address indexed receiver,
+        uint256 startTokenId,
+        uint256 quantityClaimed
+    );
+    
+    event ClaimConditionsUpdated(
+        bool active,
+        uint256 startTime
+    );
 
