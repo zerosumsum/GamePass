@@ -108,6 +108,6 @@ Contracts README: Smart contract setup and deployment details.
 
 Frontend README: Frontend setup and feature documentation.
 
-## Built for Hackathon
+## About This Project
 
-GamePass built for WalletConnect Celo Hackathon. Play to earn mechanics. Mobile first design. Smart contract rewards. MiniPay integration. Multiple games. Ready for users.
+GamePass is a personal project exploring play to earn mechanics on Celo blockchain. Mobile first design. Smart contract rewards. MiniPay integration. Multiple games. Built for learning and experimentation.
