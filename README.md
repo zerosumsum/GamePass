@@ -78,3 +78,7 @@ Your Gem NFT belongs to you. Trade it. Sell it. Keep it. Your PASS tokens belong
 ## Why Celo
 
 Celo offers low fees. Your rewards stay in your pocket. Fast transactions mean quick payouts. Mobile design works on your phone. Built for real use.
+
+## Getting Started
+
+Frontend: Navigate to frontend folder. Run npm install. Run npm run dev. Visit localhost:3000.
