@@ -70,3 +70,7 @@ MiniPay users get special features. Automatic wallet detection. cUSD balance dis
 ## Mobile First
 
 GamePass works on your phone. Responsive design fits any screen. iPhone frame on desktop. Full screen on mobile. Touch controls work perfectly.
+
+## What You Own
+
+Your Gem NFT belongs to you. Trade it. Sell it. Keep it. Your PASS tokens belong to you. Spend them. Hold them. Your scores stay on blockchain forever.
