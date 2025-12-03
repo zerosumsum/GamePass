@@ -44,3 +44,5 @@ Step six: Claim rewards. Top players earn PASS tokens. Rewards go to your wallet
 Rhythm: Tap glowing buttons in sync. Perfect timing scores 10 points. Good timing scores 5 points. Thirty second rounds. Sound effects guide you.
 
 Simon: Watch button sequences. Repeat patterns correctly. Score based on speed. Wrong answer ends the game.
+
+Snake: Control snake with arrow keys. Eat food to grow. Score increases with food eaten. Game over on wall collision or self collision.
