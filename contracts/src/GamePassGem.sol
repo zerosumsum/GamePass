@@ -58,3 +58,28 @@ contract GamePassGem is ERC721URIStorage, Ownable, ReentrancyGuard {
         uint256 startTime
     );
 
+    /**
+     * @dev Constructor
+     * @param _name Token name
+     * @param _symbol Token symbol
+     * @param _maxSupply Maximum supply of Gems
+     * @param _paymentToken Address of PASS token for payment
+     * @param _treasury Treasury address to receive payments
+     */
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        uint256 _maxSupply,
+        address _paymentToken,
+        address _treasury
+    ) ERC721(_name, _symbol) Ownable(msg.sender) {
+        require(_maxSupply > 0, "Max supply must be greater than 0");
+        require(_paymentToken != address(0), "Payment token cannot be zero address");
+        require(_treasury != address(0), "Treasury cannot be zero address");
+        
+        maxSupply = _maxSupply;
+        paymentToken = _paymentToken;
+        treasury = _treasury;
+        _tokenIdCounter = 1;
+    }
+
