@@ -16,7 +16,7 @@ Play multiple games. Earn rewards. Own your progress.
 - [Getting Started](#getting-started)
 - [Deployed Contracts](#deployed-contracts)
 - [Documentation](#documentation)
-- [Built for Hackathon](#built-for-hackathon)
+- [About This Project](#about-this-project)
 
 ## What You Get
 
