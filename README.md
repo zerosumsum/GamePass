@@ -24,3 +24,5 @@ You play various games. You score points. You earn PASS tokens. Top players win 
 ## How It Works
 
 Connect your wallet. Buy PASS tokens with CELO or cUSD. Mint one Gem NFT. Play games. Submit scores. Compete for rewards. Your progress stays on blockchain forever.
+
+## Your First Game
