@@ -292,3 +292,62 @@ contract GamePassSwapTest is Test {
         swap.withdrawCUSD();
         vm.stopPrank();
     }
+    
+    // ============ Minimum Purchase Tests ============
+    
+    function test_SetMinCeloPurchase() public {
+        uint256 newMin = 2 * 10**16; // 0.02 CELO
+        
+        vm.startPrank(owner);
+        swap.setMinCeloPurchase(newMin);
+        vm.stopPrank();
+        
+        assertEq(swap.minCeloPurchase(), newMin, "Minimum CELO purchase should be updated");
+    }
+    
+    function test_SetMinCusdPurchase() public {
+        uint256 newMin = 2 * 10**16; // 0.02 cUSD
+        
+        vm.startPrank(owner);
+        swap.setMinCusdPurchase(newMin);
+        vm.stopPrank();
+        
+        assertEq(swap.minCusdPurchase(), newMin, "Minimum cUSD purchase should be updated");
+    }
+    
+    function test_RevertWhen_SetMinCeloPurchase_NonOwner() public {
+        vm.startPrank(buyer);
+        vm.expectRevert();
+        swap.setMinCeloPurchase(2 * 10**16);
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_SetMinCusdPurchase_NonOwner() public {
+        vm.startPrank(buyer);
+        vm.expectRevert();
+        swap.setMinCusdPurchase(2 * 10**16);
+        vm.stopPrank();
+    }
+    
+    // ============ Integration Tests ============
+    
+    function test_FullWorkflow() public {
+        // Multiple CELO purchases
+        vm.deal(buyer, 3 ether);
+        vm.startPrank(buyer);
+        swap.buyTokens{value: 1 ether}();
+        swap.buyTokens{value: 1 ether}();
+        swap.buyTokens{value: 1 ether}();
+        vm.stopPrank();
+        
+        assertEq(token.balanceOf(buyer), THIRTY_PASS * 3, "Buyer should have 90 PASS tokens");
+        
+        // cUSD purchase
+        vm.startPrank(buyer);
+        cusd.approve(address(swap), 17 * 10**16);
+        swap.buyTokensWithCUSD(17 * 10**16);
+        vm.stopPrank();
+        
+        assertEq(token.balanceOf(buyer), THIRTY_PASS * 4, "Buyer should have 120 PASS tokens");
+    }
+}
