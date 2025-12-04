@@ -1,66 +1,13 @@
-## Foundry
+# GamePass Smart Contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Smart contracts for GamePass play-to-earn platform. Deploy to Celo. Test locally. Verify on Blockscout.
 
-Foundry consists of:
+## What These Contracts Do
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+GamePassToken: ERC20 token for payments and rewards. Players use PASS tokens to mint Gems. Top players earn PASS rewards.
 
-## Documentation
+GamePassSwap: Buy PASS tokens with CELO or cUSD. Exchange rates set by owner. Mints tokens directly to buyers.
 
-https://book.getfoundry.sh/
+GamePassGem: ERC721 NFT contract. Players mint Gems to unlock games. One Gem costs 34 PASS tokens.
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+GamePassRewards: Tracks scores. Distributes rewards. Leaderboard management. Prize pool distribution.
