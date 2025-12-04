@@ -216,3 +216,34 @@ contract GamePassSwapTest is Test {
         swap.buyTokens{value: celoAmount}();
         vm.stopPrank();
     }
+    
+    function test_TokensPurchasedEvent_cUSD() public {
+        uint256 cusdAmount = 17 * 10**16;
+        
+        vm.startPrank(buyer);
+        cusd.approve(address(swap), cusdAmount);
+        vm.expectEmit(true, false, false, true);
+        emit GamePassSwap.TokensPurchased(buyer, THIRTY_PASS, "cUSD");
+        swap.buyTokensWithCUSD(cusdAmount);
+        vm.stopPrank();
+    }
+    
+    function test_CeloExchangeRateUpdatedEvent() public {
+        uint256 newRate = 2 ether;
+        
+        vm.startPrank(owner);
+        vm.expectEmit(true, false, false, false);
+        emit GamePassSwap.CeloExchangeRateUpdated(1 ether, newRate);
+        swap.setCeloExchangeRate(newRate);
+        vm.stopPrank();
+    }
+    
+    function test_CusdExchangeRateUpdatedEvent() public {
+        uint256 newRate = 34 * 10**16;
+        
+        vm.startPrank(owner);
+        vm.expectEmit(true, false, false, false);
+        emit GamePassSwap.CusdExchangeRateUpdated(17 * 10**16, newRate);
+        swap.setCusdExchangeRate(newRate);
+        vm.stopPrank();
+    }
