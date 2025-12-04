@@ -102,7 +102,7 @@ contract GamePassSwap is Ownable, ReentrancyGuard {
         require(_cusdAmount >= minCusdPurchase, "Payment below minimum");
         require(_cusdAmount > 0, "Payment must be greater than zero");
         
-        uint256 passAmount = (_cusdAmount * 10**18) / cusdExchangeRate;
+        uint256 passAmount = (_cusdAmount * 30 * 10**18) / (17 * 10**16);
         require(passAmount > 0, "Token amount must be greater than zero");
         
         cusdToken.safeTransferFrom(msg.sender, address(this), _cusdAmount);
