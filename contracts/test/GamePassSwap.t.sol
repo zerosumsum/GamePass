@@ -247,3 +247,48 @@ contract GamePassSwapTest is Test {
         swap.setCusdExchangeRate(newRate);
         vm.stopPrank();
     }
+    
+    // ============ Withdrawal Tests ============
+    
+    function test_WithdrawCELO() public {
+        uint256 celoAmount = 1 ether;
+        
+        vm.deal(buyer, celoAmount);
+        vm.prank(buyer);
+        swap.buyTokens{value: celoAmount}();
+        
+        uint256 contractBalance = address(swap).balance;
+        
+        vm.prank(owner);
+        swap.withdrawCELO();
+        
+        assertEq(address(swap).balance, 0, "Contract balance should be zero");
+    }
+    
+    function test_WithdrawCUSD() public {
+        uint256 cusdAmount = 17 * 10**16;
+        
+        vm.startPrank(buyer);
+        cusd.approve(address(swap), cusdAmount);
+        swap.buyTokensWithCUSD(cusdAmount);
+        vm.stopPrank();
+        
+        vm.prank(owner);
+        swap.withdrawCUSD();
+        
+        assertEq(cusd.balanceOf(address(swap)), 0, "Contract balance should be zero");
+    }
+    
+    function test_RevertWhen_WithdrawCELO_NonOwner() public {
+        vm.startPrank(buyer);
+        vm.expectRevert();
+        swap.withdrawCELO();
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_WithdrawCUSD_NonOwner() public {
+        vm.startPrank(buyer);
+        vm.expectRevert();
+        swap.withdrawCUSD();
+        vm.stopPrank();
+    }
