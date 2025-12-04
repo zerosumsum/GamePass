@@ -71,8 +71,9 @@ contract GamePassSwap is Ownable, ReentrancyGuard {
         cusdToken = IERC20(_cusdToken);
         
         // Default exchange rates: 1 CELO = 30 PASS, 0.17 cUSD = 30 PASS
-        celoExchangeRate = 1 ether / 30; // 1 CELO / 30 PASS = 0.0333... CELO per PASS
-        cusdExchangeRate = (17 * 10**16) / 30; // 0.17 cUSD / 30 PASS = 0.00566... cUSD per PASS
+        // Stored for reference, actual calculation uses hardcoded values for precision
+        celoExchangeRate = 1 ether; // Reference: 1 CELO
+        cusdExchangeRate = 17 * 10**16; // Reference: 0.17 cUSD
         
         // Minimum purchase: 0.01 CELO or 0.01 cUSD
         minCeloPurchase = 10**16; // 0.01 CELO
