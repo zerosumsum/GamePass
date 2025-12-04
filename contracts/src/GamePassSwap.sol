@@ -78,4 +78,19 @@ contract GamePassSwap is Ownable, ReentrancyGuard {
         minCeloPurchase = 10**16; // 0.01 CELO
         minCusdPurchase = 10**16; // 0.01 cUSD
     }
+    
+    /**
+     * @dev Buy PASS tokens with CELO (native currency)
+     */
+    function buyTokens() external payable nonReentrant {
+        require(msg.value >= minCeloPurchase, "Payment below minimum");
+        require(msg.value > 0, "Payment must be greater than zero");
+        
+        uint256 passAmount = (msg.value * 10**18) / celoExchangeRate;
+        require(passAmount > 0, "Token amount must be greater than zero");
+        
+        gamePassToken.mint(msg.sender, passAmount);
+        
+        emit TokensPurchased(msg.sender, passAmount, "CELO");
+    }
 
