@@ -20,4 +20,11 @@ import "./GamePassToken.sol";
  * - Owner-controlled rate updates
  */
 contract GamePassSwap is Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
+    
+    /// @dev GamePassToken contract instance
+    GamePassToken public gamePassToken;
+    
+    /// @dev cUSD token address
+    IERC20 public cusdToken;
 
