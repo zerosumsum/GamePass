@@ -186,3 +186,93 @@ forge test -vvv
 ```
 
 All tests must pass before deployment.
+
+
+## Frontend Integration
+
+Frontend connects to contracts using contract addresses. Update frontend environment variables with deployed contract addresses.
+
+Example integration:
+
+```typescript
+const tokenAddress = "0x...";
+const swapAddress = "0x...";
+const gemAddress = "0x...";
+const rewardsAddress = "0x...";
+```
+
+Frontend uses Thirdweb SDK or ethers.js to interact with contracts.
+
+## Network Configuration
+
+Contracts are configured for Celo networks. RPC endpoints are set in foundry.toml.
+
+Celo Sepolia Testnet:
+- Chain ID: 11142220
+- RPC: https://forno.celo-sepolia.celo-testnet.org/
+- Explorer: https://celo-sepolia.blockscout.com/
+
+Celo Mainnet:
+- Chain ID: 42220
+- RPC: https://forno.celo.org
+- Explorer: https://celoscan.io/
+
+## Contract Verification
+
+Verify contracts on Blockscout (Celo Sepolia) or CeloScan (Mainnet):
+
+```bash
+forge verify-contract --chain celo-sepolia <CONTRACT_ADDRESS> <CONTRACT_NAME> --constructor-args $(cast abi-encode "constructor(<ARGS>)" <ARG1> <ARG2>)
+```
+
+Or use foundry.toml verification config:
+
+```bash
+forge script script/Deploy.s.sol:DeployScript --rpc-url celo-sepolia --broadcast --verify
+```
+
+Verification requires ETHERSCAN_API_KEY in .env file.
+
+## Project Structure
+
+```
+contracts/
+├── src/
+│   ├── GamePassToken.sol
+│   ├── GamePassSwap.sol
+│   ├── GamePassGem.sol
+│   └── GamePassRewards.sol
+├── test/
+│   ├── GamePassToken.t.sol
+│   ├── GamePassSwap.t.sol
+│   ├── GamePassGem.t.sol
+│   └── GamePassRewards.t.sol
+├── script/
+│   ├── Deploy.s.sol
+│   ├── DeployTokenAndSwap.s.sol
+│   └── UpdateContracts.s.sol
+├── foundry.toml
+└── README.md
+```
+
+## Security
+
+Contracts use OpenZeppelin libraries for security:
+- ReentrancyGuard for reentrancy protection
+- SafeERC20 for safe token transfers
+- Ownable for access control
+- Pausable for emergency stops
+
+Always audit contracts before mainnet deployment.
+
+## Troubleshooting
+
+**Build errors:** Ensure OpenZeppelin contracts are installed with `forge install`.
+
+**Deployment fails:** Check RPC endpoint and private key in .env file.
+
+**Verification fails:** Verify ETHERSCAN_API_KEY is correct and network matches.
+
+**Test failures:** Run `forge test -vvv` for detailed error messages.
+
+**Gas estimation errors:** Ensure wallet has sufficient CELO for gas fees.
