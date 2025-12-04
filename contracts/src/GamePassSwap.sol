@@ -169,4 +169,3 @@ contract GamePassSwap is Ownable, ReentrancyGuard {
         cusdToken.safeTransfer(owner(), balance);
     }
 }
-
