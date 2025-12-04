@@ -110,4 +110,17 @@ contract GamePassSwap is Ownable, ReentrancyGuard {
         
         emit TokensPurchased(msg.sender, passAmount, "cUSD");
     }
+    
+    /**
+     * @dev Set CELO exchange rate (only owner)
+     * @param _rate New exchange rate (wei per token)
+     */
+    function setCeloExchangeRate(uint256 _rate) external onlyOwner {
+        require(_rate > 0, "Exchange rate must be greater than zero");
+        
+        uint256 oldRate = celoExchangeRate;
+        celoExchangeRate = _rate;
+        
+        emit CeloExchangeRateUpdated(oldRate, _rate);
+    }
 
