@@ -110,4 +110,36 @@ contract GamePassSwapTest is Test {
         assertEq(token.balanceOf(buyer), expectedPass, "Buyer should receive 30 PASS tokens");
         assertEq(cusd.balanceOf(address(swap)), cusdAmount, "Swap should receive cUSD");
     }
+    
+    function test_BuyTokensWithCUSD_FractionalAmount() public {
+        uint256 cusdAmount = 85 * 10**15; // 0.085 cUSD (half of 0.17)
+        uint256 expectedPass = 15 * 10**18; // 15 PASS tokens
+        
+        vm.startPrank(buyer);
+        cusd.approve(address(swap), cusdAmount);
+        swap.buyTokensWithCUSD(cusdAmount);
+        vm.stopPrank();
+        
+        assertEq(token.balanceOf(buyer), expectedPass, "Buyer should receive 15 PASS tokens");
+    }
+    
+    function test_RevertWhen_BuyTokensWithCUSD_BelowMinimum() public {
+        uint256 cusdAmount = swap.minCusdPurchase() - 1;
+        
+        vm.startPrank(buyer);
+        cusd.approve(address(swap), cusdAmount);
+        vm.expectRevert("Payment below minimum");
+        swap.buyTokensWithCUSD(cusdAmount);
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_BuyTokensWithCUSD_InsufficientBalance() public {
+        uint256 cusdAmount = 1000 ether; // More than buyer has
+        
+        vm.startPrank(buyer);
+        cusd.approve(address(swap), cusdAmount);
+        vm.expectRevert();
+        swap.buyTokensWithCUSD(cusdAmount);
+        vm.stopPrank();
+    }
 
