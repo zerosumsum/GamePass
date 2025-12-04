@@ -9,6 +9,10 @@ optimizer_runs = 200
 # Somnia Testnet Configuration
 [rpc_endpoints]
 somnia-testnet = "https://dream-rpc.somnia.network"
+celo-sepolia = "https://forno.celo-sepolia.celo-testnet.org/"
+celo = "https://forno.celo.org"
 
 [etherscan]
 somnia-testnet = { key = "${ETHERSCAN_API_KEY}", url = "https://shannon-explorer.somnia.network/api" }
+celo-sepolia = { key = "${ETHERSCAN_API_KEY}", url = "https://celo-sepolia.blockscout.com/api" }
+celo = { key = "${ETHERSCAN_API_KEY}", url = "https://api.celoscan.io/api" }

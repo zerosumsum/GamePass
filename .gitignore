@@ -5,6 +5,9 @@ PR_DESCRIPTION_*.md
 REWRITE_COMMIT_TIMES.md
 COMMIT_GUIDELINES.md
 
+
+*.sh
+
 # Environment variables
 .env
 .env.local
