@@ -188,3 +188,31 @@ contract GamePassSwapTest is Test {
         swap.setCusdExchangeRate(0);
         vm.stopPrank();
     }
+    
+    function test_RevertWhen_SetCeloExchangeRate_NonOwner() public {
+        vm.startPrank(buyer);
+        vm.expectRevert();
+        swap.setCeloExchangeRate(2 ether);
+        vm.stopPrank();
+    }
+    
+    function test_RevertWhen_SetCusdExchangeRate_NonOwner() public {
+        vm.startPrank(buyer);
+        vm.expectRevert();
+        swap.setCusdExchangeRate(34 * 10**16);
+        vm.stopPrank();
+    }
+    
+    // ============ Event Tests ============
+    
+    function test_TokensPurchasedEvent_CELO() public {
+        uint256 celoAmount = 1 ether;
+        
+        vm.deal(buyer, celoAmount);
+        
+        vm.startPrank(buyer);
+        vm.expectEmit(true, false, false, true);
+        emit GamePassSwap.TokensPurchased(buyer, THIRTY_PASS, "CELO");
+        swap.buyTokens{value: celoAmount}();
+        vm.stopPrank();
+    }
