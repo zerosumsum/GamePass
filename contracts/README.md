@@ -109,3 +109,50 @@ GamePassRewards: (To be deployed)
 cUSD Token: 0xdE9e4C3ce781b4bA68120d6261cbad65ce0aB00b
 
 View contracts on Blockscout: https://celo-sepolia.blockscout.com/
+
+## Usage
+
+### Buy PASS Tokens with CELO
+
+Send CELO to swap contract. Receive PASS tokens.
+
+Exchange rate: 1 CELO equals 30 PASS tokens.
+
+Minimum purchase: 0.01 CELO.
+
+### Buy PASS Tokens with cUSD
+
+Approve cUSD spending first. Call buyTokensWithCUSD function.
+
+Exchange rate: 0.17 cUSD equals 30 PASS tokens.
+
+Minimum purchase: 0.01 cUSD.
+
+### Mint NFT Gems
+
+Approve 34 PASS tokens. Call claim function on Gem contract.
+
+One Gem unlocks all games.
+
+### Submit Scores
+
+Call submitScore function on rewards contract.
+
+Minimum score: 10 points.
+
+### Claim Rewards
+
+Top players call claimRewards function.
+
+Reward distribution:
+- First place: 40 percent of prize pool
+- Second place: 25 percent of prize pool
+- Third place: 15 percent of prize pool
+- Places four through ten: 10 percent split among seven players
+- Participation: 10 percent split among all eligible players
+
+### Fund Prize Pool
+
+Owner calls fundPrizePool function.
+
+Mints PASS tokens directly to contract.
