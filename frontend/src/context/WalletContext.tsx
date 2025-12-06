@@ -50,4 +50,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children, client
   const [address, setAddress] = useState<string | undefined>();
   const [balance, setBalance] = useState<string>("0");
   const [chainId, setChainId] = useState<number | undefined>();
+  const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
