@@ -19,3 +19,15 @@ export const celoSepoliaChain = defineChain({
   rpc: "https://sepolia-forno.celo.org",
 });
 
+interface WalletContextType {
+  address: string | undefined;
+  balance: string;
+  chainId: number | undefined;
+  isConnected: boolean;
+  isConnecting: boolean;
+  error: string | null;
+  connectWallet: (walletId: string) => Promise<void>;
+  disconnectWallet: () => Promise<void>;
+  switchNetwork: () => Promise<void>;
+}
+
