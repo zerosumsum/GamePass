@@ -31,3 +31,5 @@ interface WalletContextType {
   switchNetwork: () => Promise<void>;
 }
 
+const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
