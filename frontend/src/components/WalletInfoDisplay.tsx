@@ -31,7 +31,7 @@ export const WalletInfoDisplay: React.FC = () => {
       
       <div>
         <p className="text-sm text-gray-600">Balance</p>
-        <p className="text-lg font-semibold">{parseFloat(balance).toFixed(4)} CELO</p>
+        <p className="text-lg font-semibold">{formatBalance(balance)} CELO</p>
       </div>
 
       {!isCorrectNetwork && (
