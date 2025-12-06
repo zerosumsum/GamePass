@@ -63,7 +63,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children, client
   
   const activeAccount = useActiveAccount();
   const activeWallet = useActiveWallet();
-  const disconnect = useDisconnect();
+  const disconnectWalletHook = useDisconnect();
   const connectionStatus = useConnectionStatus();
 
   // Update state based on active account
@@ -155,7 +155,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children, client
 
   const disconnectWallet = async () => {
     try {
-      await disconnect();
+      await disconnectWalletHook();
       setAddress(undefined);
       setBalance("0");
       setChainId(undefined);
