@@ -54,3 +54,5 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children, client
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const client = createThirdwebClient({ clientId });
+
