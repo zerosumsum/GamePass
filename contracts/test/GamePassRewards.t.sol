@@ -135,17 +135,18 @@ contract GamePassRewardsTest is Test {
     function test_Leaderboard_MaxSizeLimit() public {
         vm.startPrank(backend);
         // Submit 101 scores (exceeds MAX_LEADERBOARD_SIZE of 100)
+        // Submit in descending order so highest scores stay
         for (uint256 i = 0; i < 101; i++) {
             address player = address(uint160(100 + i)); // Generate unique addresses
-            rewards.submitScore(player, 100 + i);
+            rewards.submitScore(player, 1000 - i); // Higher scores first
         }
         vm.stopPrank();
         
         assertEq(rewards.getLeaderboardLength(), 100, "Leaderboard should be capped at 100");
         
-        // Lowest score should be removed
+        // Lowest score (1000 - 100 = 900) should be removed, last entry should be 901
         GamePassRewards.LeaderboardEntry memory lastEntry = rewards.getLeaderboardEntry(99);
-        assertEq(lastEntry.score, 200, "Last entry should be score 200 (player 100)");
+        assertEq(lastEntry.score, 901, "Last entry should be score 901");
     }
     
     // ============ Prize Pool Funding Tests ============
