@@ -31,6 +31,9 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
     /// @dev Prize pool amount
     uint256 public prizePool;
     
+    /// @dev Prize pool snapshot for reward calculations (set when first claim happens)
+    uint256 public prizePoolSnapshot;
+    
     /// @dev Minimum score threshold to qualify for rewards
     uint256 public minScoreThreshold;
     
@@ -212,6 +215,11 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
         require(!entry.claimed, "Entry already claimed");
         require(entry.score >= minScoreThreshold, "Score below minimum threshold");
         
+        // Set prize pool snapshot on first claim
+        if (prizePoolSnapshot == 0) {
+            prizePoolSnapshot = prizePool;
+        }
+        
         uint256 rewardAmount = _calculateReward(actualIndex);
         require(rewardAmount > 0, "No rewards available");
         require(prizePool >= rewardAmount, "Insufficient prize pool");
@@ -231,11 +239,15 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
     
     /**
      * @dev Calculate reward amount for a given leaderboard position
+     * Uses the current prize pool, but calculates based on original distribution percentages
      * @param _index Leaderboard index (0-indexed)
      * @return Reward amount in tokens
      */
     function _calculateReward(uint256 _index) internal view returns (uint256) {
-        if (prizePool == 0) {
+        // Use prize pool snapshot if set, otherwise use current prize pool
+        uint256 poolForCalculation = prizePoolSnapshot > 0 ? prizePoolSnapshot : prizePool;
+        
+        if (poolForCalculation == 0) {
             return 0;
         }
         
@@ -243,22 +255,22 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
         
         if (rank == 1) {
             // First place: 40%
-            return (prizePool * FIRST_PLACE_PERCENT) / 10000;
+            return (poolForCalculation * FIRST_PLACE_PERCENT) / 10000;
         } else if (rank == 2) {
             // Second place: 25%
-            return (prizePool * SECOND_PLACE_PERCENT) / 10000;
+            return (poolForCalculation * SECOND_PLACE_PERCENT) / 10000;
         } else if (rank == 3) {
             // Third place: 15%
-            return (prizePool * THIRD_PLACE_PERCENT) / 10000;
+            return (poolForCalculation * THIRD_PLACE_PERCENT) / 10000;
         } else if (rank >= 4 && rank <= 10) {
             // Places 4-10: 10% split among 7 players
-            uint256 places4to10Total = (prizePool * PLACES_4_10_PERCENT) / 10000;
+            uint256 places4to10Total = (poolForCalculation * PLACES_4_10_PERCENT) / 10000;
             uint256 eligiblePlayers = leaderboard.length >= 10 ? 7 : (leaderboard.length >= 4 ? leaderboard.length - 3 : 0);
             if (eligiblePlayers == 0) return 0;
             return places4to10Total / eligiblePlayers;
         } else {
             // All participants: 10% split among all eligible players
-            uint256 participationTotal = (prizePool * PARTICIPATION_PERCENT) / 10000;
+            uint256 participationTotal = (poolForCalculation * PARTICIPATION_PERCENT) / 10000;
             uint256 eligibleCount = _countEligiblePlayers();
             if (eligibleCount == 0) return 0;
             return participationTotal / eligibleCount;
@@ -287,6 +299,11 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
         require(_amount > 0, "Amount must be greater than zero");
         
         prizePool += _amount;
+        
+        // Reset snapshot if pool is being refilled (allows new reward period)
+        if (prizePoolSnapshot > 0 && prizePool >= prizePoolSnapshot) {
+            prizePoolSnapshot = 0;
+        }
         
         // Mint tokens to this contract
         gamePassToken.mint(address(this), _amount);
