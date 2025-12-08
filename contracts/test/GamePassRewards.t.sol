@@ -364,5 +364,57 @@ contract GamePassRewardsTest is Test {
         vm.expectRevert("Score below minimum threshold");
         rewards.claimRewards(player1);
     }
+    
+    // ============ Minimum Score Threshold Tests ============
+    
+    function test_SetMinScoreThreshold() public {
+        uint256 newThreshold = 50;
+        
+        vm.prank(owner);
+        rewards.setMinScoreThreshold(newThreshold);
+        
+        assertEq(rewards.minScoreThreshold(), newThreshold, "Threshold should be updated");
+    }
+    
+    function test_RevertWhen_SubmitScore_BelowNewThreshold() public {
+        uint256 newThreshold = 50;
+        
+        vm.startPrank(owner);
+        rewards.setMinScoreThreshold(newThreshold);
+        vm.stopPrank();
+        
+        vm.prank(backend);
+        vm.expectRevert("Score below minimum threshold");
+        rewards.submitScore(player1, 30);
+    }
+    
+    function test_RevertWhen_SetMinScoreThreshold_NotOwner() public {
+        vm.prank(player1);
+        vm.expectRevert();
+        rewards.setMinScoreThreshold(50);
+    }
+    
+    // ============ Owner Functions Tests ============
+    
+    function test_SetBackendValidator() public {
+        address newBackend = address(100);
+        
+        vm.prank(owner);
+        rewards.setBackendValidator(newBackend);
+        
+        assertEq(rewards.backendValidator(), newBackend, "Backend validator should be updated");
+    }
+    
+    function test_RevertWhen_SetBackendValidator_ZeroAddress() public {
+        vm.prank(owner);
+        vm.expectRevert("Backend validator cannot be zero address");
+        rewards.setBackendValidator(address(0));
+    }
+    
+    function test_RevertWhen_SetBackendValidator_NotOwner() public {
+        vm.prank(player1);
+        vm.expectRevert();
+        rewards.setBackendValidator(address(100));
+    }
 }
 
