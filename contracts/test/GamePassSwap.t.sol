@@ -91,7 +91,7 @@ contract GamePassSwapTest is Test {
     
     function test_RevertWhen_BuyTokens_ZeroValue() public {
         vm.startPrank(buyer);
-        vm.expectRevert("Payment must be greater than zero");
+        vm.expectRevert("Payment below minimum");
         swap.buyTokens{value: 0}();
         vm.stopPrank();
     }
@@ -134,7 +134,7 @@ contract GamePassSwapTest is Test {
     }
     
     function test_RevertWhen_BuyTokensWithCUSD_InsufficientBalance() public {
-        uint256 cusdAmount = 1000 ether; // More than buyer has
+        uint256 cusdAmount = 2000 ether; // More than buyer has (buyer has 1000 ether)
         
         vm.startPrank(buyer);
         cusd.approve(address(swap), cusdAmount);
@@ -257,12 +257,16 @@ contract GamePassSwapTest is Test {
         vm.prank(buyer);
         swap.buyTokens{value: celoAmount}();
         
-        uint256 contractBalance = address(swap).balance;
+        assertEq(address(swap).balance, celoAmount, "Contract should have received CELO");
+        
+        uint256 ownerBalanceBefore = owner.balance;
+        vm.deal(owner, 0); // Ensure owner starts with 0 balance for accurate test
         
         vm.prank(owner);
         swap.withdrawCELO();
         
         assertEq(address(swap).balance, 0, "Contract balance should be zero");
+        assertEq(owner.balance, ownerBalanceBefore + celoAmount, "Owner should receive CELO");
     }
     
     function test_WithdrawCUSD() public {
