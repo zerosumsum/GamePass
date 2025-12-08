@@ -293,4 +293,58 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
         
         emit PrizePoolFunded(_amount, prizePool);
     }
+    
+    /**
+     * @dev Get the leaderboard entries
+     * @return Array of LeaderboardEntry structs
+     */
+    function getLeaderboard() external view returns (LeaderboardEntry[] memory) {
+        return leaderboard;
+    }
+    
+    /**
+     * @dev Get leaderboard length
+     * @return Number of entries in leaderboard
+     */
+    function getLeaderboardLength() external view returns (uint256) {
+        return leaderboard.length;
+    }
+    
+    /**
+     * @dev Get a specific leaderboard entry by index
+     * @param _index Index of the entry (0-indexed)
+     * @return LeaderboardEntry struct
+     */
+    function getLeaderboardEntry(uint256 _index) external view returns (LeaderboardEntry memory) {
+        require(_index < leaderboard.length, "Index out of bounds");
+        return leaderboard[_index];
+    }
+    
+    /**
+     * @dev Get player's reward amount (without claiming)
+     * @param _player Address of the player
+     * @return Reward amount in tokens
+     */
+    function getPlayerReward(address _player) external view returns (uint256) {
+        if (hasClaimed[_player]) {
+            return 0;
+        }
+        
+        uint256 playerIdx = playerIndex[_player];
+        if (playerIdx == 0) {
+            return 0;
+        }
+        
+        uint256 actualIndex = playerIdx - 1;
+        if (actualIndex >= leaderboard.length) {
+            return 0;
+        }
+        
+        LeaderboardEntry storage entry = leaderboard[actualIndex];
+        if (entry.player != _player || entry.claimed || entry.score < minScoreThreshold) {
+            return 0;
+        }
+        
+        return _calculateReward(actualIndex);
+    }
 
