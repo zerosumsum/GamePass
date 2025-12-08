@@ -192,4 +192,90 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
         leaderboard.pop();
         playerIndex[removedPlayer] = 0; // Reset index
     }
+    
+    /**
+     * @dev Claim rewards for a player based on their leaderboard position
+     * @param _player Address of the player claiming rewards
+     */
+    function claimRewards(address _player) external nonReentrant {
+        require(_player != address(0), "Player cannot be zero address");
+        require(!hasClaimed[_player], "Rewards already claimed");
+        
+        uint256 playerIdx = playerIndex[_player];
+        require(playerIdx > 0, "Player not in leaderboard");
+        
+        uint256 actualIndex = playerIdx - 1; // Convert from 1-indexed to 0-indexed
+        require(actualIndex < leaderboard.length, "Invalid leaderboard index");
+        
+        LeaderboardEntry storage entry = leaderboard[actualIndex];
+        require(entry.player == _player, "Player mismatch");
+        require(!entry.claimed, "Entry already claimed");
+        require(entry.score >= minScoreThreshold, "Score below minimum threshold");
+        
+        uint256 rewardAmount = _calculateReward(actualIndex);
+        require(rewardAmount > 0, "No rewards available");
+        require(prizePool >= rewardAmount, "Insufficient prize pool");
+        
+        // Mark as claimed
+        entry.claimed = true;
+        hasClaimed[_player] = true;
+        
+        // Update prize pool
+        prizePool -= rewardAmount;
+        
+        // Transfer tokens
+        gamePassToken.safeTransfer(_player, rewardAmount);
+        
+        emit RewardsDistributed(_player, rewardAmount, actualIndex + 1); // Rank is 1-indexed
+    }
+    
+    /**
+     * @dev Calculate reward amount for a given leaderboard position
+     * @param _index Leaderboard index (0-indexed)
+     * @return Reward amount in tokens
+     */
+    function _calculateReward(uint256 _index) internal view returns (uint256) {
+        if (prizePool == 0) {
+            return 0;
+        }
+        
+        uint256 rank = _index + 1; // Convert to 1-indexed rank
+        
+        if (rank == 1) {
+            // First place: 40%
+            return (prizePool * FIRST_PLACE_PERCENT) / 10000;
+        } else if (rank == 2) {
+            // Second place: 25%
+            return (prizePool * SECOND_PLACE_PERCENT) / 10000;
+        } else if (rank == 3) {
+            // Third place: 15%
+            return (prizePool * THIRD_PLACE_PERCENT) / 10000;
+        } else if (rank >= 4 && rank <= 10) {
+            // Places 4-10: 10% split among 7 players
+            uint256 places4to10Total = (prizePool * PLACES_4_10_PERCENT) / 10000;
+            uint256 eligiblePlayers = leaderboard.length >= 10 ? 7 : (leaderboard.length >= 4 ? leaderboard.length - 3 : 0);
+            if (eligiblePlayers == 0) return 0;
+            return places4to10Total / eligiblePlayers;
+        } else {
+            // All participants: 10% split among all eligible players
+            uint256 participationTotal = (prizePool * PARTICIPATION_PERCENT) / 10000;
+            uint256 eligibleCount = _countEligiblePlayers();
+            if (eligibleCount == 0) return 0;
+            return participationTotal / eligibleCount;
+        }
+    }
+    
+    /**
+     * @dev Count eligible players (score >= minScoreThreshold)
+     * @return Count of eligible players
+     */
+    function _countEligiblePlayers() internal view returns (uint256) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < leaderboard.length; i++) {
+            if (leaderboard[i].score >= minScoreThreshold) {
+                count++;
+            }
+        }
+        return count;
+    }
 
