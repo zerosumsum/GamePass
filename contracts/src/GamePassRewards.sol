@@ -60,4 +60,24 @@ contract GamePassRewards is Ownable, ReentrancyGuard {
     
     /// @dev Mapping to track if a player has claimed rewards
     mapping(address => bool) public hasClaimed;
+    
+    /// @dev Event emitted when a score is submitted
+    event ScoreSubmitted(
+        address indexed player,
+        uint256 score,
+        uint256 timestamp
+    );
+    
+    /// @dev Event emitted when rewards are distributed
+    event RewardsDistributed(
+        address indexed player,
+        uint256 amount,
+        uint256 rank
+    );
+    
+    /// @dev Event emitted when prize pool is funded
+    event PrizePoolFunded(
+        uint256 amount,
+        uint256 newTotal
+    );
 
